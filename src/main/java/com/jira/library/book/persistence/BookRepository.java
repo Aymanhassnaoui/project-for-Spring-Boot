@@ -13,6 +13,6 @@ public interface BookRepository extends JpaRepository<BooKEntity, Long> {
      * Elle va générer la requête SQL : 
      * SELECT count(*) > 0 FROM book WHERE page_number = ? AND title = ?
      */
-    boolean existsByPageNumberAndTitle(int pageNumber, String title);
+    boolean existsByPageNumberAndTitle(Integer pageNumber, String title);
     
 }

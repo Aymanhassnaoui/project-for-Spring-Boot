@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.jira.library.book.dto.request.BookRequest;
+import com.jira.library.book.dto.response.BookResponse;
 import com.jira.library.book.model.BooKEntity;
 import com.jira.library.book.service.BookService;
 
@@ -14,26 +16,33 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@RequestMapping("/api/books") // Préfixe pour toutes les routes de ce contrôleur
 @RequiredArgsConstructor // Génère le constructeur pour bookService automatiquement
 public class BookController {
 
-    // Get POUR AFFICHER TOUS LES LIVRES
     // POST POUR AJOUTER UN LIVRE
 
     private final BookService bookService; // On injecte le SERVICE, plus le repository
 
 
 
-  @PostMapping("/book")
-   public ResponseEntity<BooKEntity> create(@Valid @RequestBody BooKEntity book) {
-        BooKEntity savedBook = bookService.createBook(book);
+  @PostMapping
+   public ResponseEntity<BookResponse> create(@Valid @RequestBody BookRequest book) {
+        BookResponse savedBook = bookService.createBook(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
     }
 
 
-    @GetMapping("/books/all")
-    public ResponseEntity<List<BooKEntity>> list() {
+    @GetMapping("/all")
+    public ResponseEntity<List<BookResponse>> list() {
         return ResponseEntity.ok(bookService.getAllBooks());
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookResponse> getById(@PathVariable Long id) {        
+        BookResponse book = bookService.getBookById(id);
+        return ResponseEntity.ok(book);
     }
 
     @GetMapping("/book/delete")
